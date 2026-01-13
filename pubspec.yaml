@@ -1,0 +1,49 @@
+name: object_detection_app
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+
+environment:
+  sdk: ">=3.5.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  #ui
+  cupertino_icons: ^1.0.8
+  search_choices: ^2.3.1
+  flutter_screenutil: ^5.9.3
+  intl: ^0.20.1
+  #ML
+  tflite:
+    git:
+      url: https://github.com/minhtritc97/flutter_tflite.git
+      ref: fc52d6895e75402990b241fecd1d0b10498868c1
+
+  #camera
+  camera: ^0.11.0+2
+  image: ^4.5.2
+  #stateMangemnt
+  provider: ^6.1.2
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^4.0.0
+
+flutter:
+
+
+  uses-material-design: true
+
+  assets:
+    - assets/models/yolov2_tiny.txt
+    - assets/models/yolov2_tiny.tflite
+    - assets/fonts/
+    - assets/images/
+
