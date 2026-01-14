@@ -16,6 +16,11 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   List<String>? _labels;
   // String? _selectedObject;
   bool _navigatedToCapture = false;
+  final Map<String, double> _previousAreas = {};
+  double _screenWidth = 0;
+  double _screenHeight = 0;
+  int _lastWarningTime = 0;
+  static const int _warningCooldownMs = 3000; // 3 giây
 
   late final TensorFlowService _tensorFlowService;
 
@@ -27,6 +32,10 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   //   state.selectedObject = value;
   //   notifyListeners();
   // }
+  void setScreenSize(double width, double height) {
+    _screenWidth = width;
+    _screenHeight = height;
+  }
 
   void setNavigatedToCapture(bool value) {
     _navigatedToCapture = value;
@@ -70,6 +79,12 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
               state.recognitions = List<Recognition>.from(
                 recognitions.map((model) => Recognition.fromJson(model)),
               );
+              for (final r in state.recognitions) {
+                if (_isCollisionRisk(r, _screenWidth, _screenHeight)) {
+                  _triggerCollisionWarning(r.detectedClass!);
+                  break;
+                }
+              }
 
               state.widthImage = cameraImage.width;
               state.heightImage = cameraImage.height;
@@ -86,26 +101,79 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     }
   }
 
-  List<Recognition> findHighestConfidenceRecognition(
-      List<Recognition> recognitions, String selectedObject) {
-    final filteredRecognitions = recognitions
-        .where((recognition) => recognition.detectedClass == selectedObject)
-        .toList();
-    if (filteredRecognitions.isEmpty) {
-      return [];
-    }
-    Recognition? highestConfidenceRecognition;
-    double highestConfidence = 0;
+  void _triggerCollisionWarning(String label) {
+    final int now = DateTime.now().millisecondsSinceEpoch;
 
-    for (final recognition in filteredRecognitions) {
-      if (recognition.confidenceInClass! > highestConfidence) {
-        highestConfidence = recognition.confidenceInClass!;
-        highestConfidenceRecognition = recognition;
-      }
+    if (now - _lastWarningTime < _warningCooldownMs) {
+      return; //  cooldown
     }
-    return highestConfidenceRecognition == null
-        ? []
-        : [highestConfidenceRecognition];
+
+    _lastWarningTime = now;
+
+    debugPrint("CẢNH BÁO VA CHẠM: $label");
+  }
+
+  // List<Recognition> findHighestConfidenceRecognition(
+  //     List<Recognition> recognitions, String selectedObject) {
+  //   final filteredRecognitions = recognitions
+  //       .where((recognition) => recognition.detectedClass == selectedObject)
+  //       .toList();
+  //   if (filteredRecognitions.isEmpty) {
+  //     return [];
+  //   }
+  //   Recognition? highestConfidenceRecognition;
+  //   double highestConfidence = 0;
+
+  //   for (final recognition in filteredRecognitions) {
+  //     if (recognition.confidenceInClass! > highestConfidence) {
+  //       highestConfidence = recognition.confidenceInClass!;
+  //       highestConfidenceRecognition = recognition;
+  //     }
+  //   }
+  //   return highestConfidenceRecognition == null
+  //       ? []
+  //       : [highestConfidenceRecognition];
+  // }
+
+  bool _isCollisionRisk(
+    Recognition current,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    // 1. confidence (null-safe)
+    final double confidence = current.confidenceInClass ?? 0.0;
+    if (confidence < 0.5) return false;
+
+    // 2. rect null check
+    final rect = current.rect;
+    if (rect == null) return false;
+
+    // 3. label null check
+    final String? label = current.detectedClass;
+    if (label == null) return false;
+
+    // 4. bounding box size (YOLO rect)
+    final double boxWidth = rect.w * screenWidth;
+    final double boxHeight = rect.h * screenHeight;
+    final double currentArea = boxWidth * boxHeight;
+
+    // 5. so sánh diện tích
+    final double? previousArea = _previousAreas[label];
+    _previousAreas[label] = currentArea;
+
+    if (previousArea == null) return false;
+    if (currentArea / previousArea < 1.3) return false;
+
+    // 6. vị trí trung tâm bounding box
+    final double centerX = rect.x + rect.w / 2;
+    final double centerY = rect.y + rect.h / 2;
+
+    final double dx = (centerX - 0.5).abs();
+    final double dy = (centerY - 0.5).abs();
+
+    if (dx > 0.25 || dy > 0.25) return false;
+
+    return true;
   }
 
   Uint8List convertCameraImageToFile(CameraImage cameraImage) {
