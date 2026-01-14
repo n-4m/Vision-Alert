@@ -97,10 +97,6 @@ class ConfidenceWidget extends StatelessWidget {
                       fontSize: AppFontSizes.medium,
                       backgroundColor: AppColors.white),
                 ),
-                if (_w < 0.3 * screenWidth)
-                  Text('Move closer', style: TextStyle(color: Colors.red)),
-                if (_w > 0.7 * screenWidth)
-                  Text('Move farther', style: TextStyle(color: Colors.red)),
               ],
             ),
           ),

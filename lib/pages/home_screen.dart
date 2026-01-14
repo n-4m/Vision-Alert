@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:object_detection_app/app/app_resources.dart';
 import 'package:object_detection_app/app/base/base_stateful.dart';
 import 'package:object_detection_app/main.dart';
@@ -12,9 +10,6 @@ import 'package:object_detection_app/view_models/home_view_model.dart';
 import 'package:object_detection_app/widgets/aperture/aperture_widget.dart';
 import 'package:object_detection_app/widgets/aperture/confidence_widget.dart';
 import 'package:provider/provider.dart';
-
-import '../app/app_router.dart';
-import '../services/navigation_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.selectedLabel});
@@ -48,46 +43,9 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
     super.initState();
     loadModel();
     initCamera();
-    setLabel();
 
     apertureController = StreamController<Map>.broadcast();
   }
-
-  // Future<void> handleCaptureWhenDetect(CameraImage cameraImage) async {
-  //   if (!mounted) {
-  //     return;
-  //   }
-  //   if (viewModel.state.recognitions.isNotEmpty &&
-  //       viewModel.state.recognitions[0].confidenceInClass! > 0.7 &&
-  //       !viewModel.state.navigatedToCapture) {
-  //     Uint8List list = viewModel.convertCameraImageToFile(cameraImage);
-  //     viewModel.setNavigatedToCapture(true);
-  //     Future.delayed(
-  //       Duration(seconds: 3),
-  //       () {
-  //         DateTime now = DateTime.now();
-
-  //         viewModel.state.recognitions[0].timestamp =
-  //             DateFormat('HH:mm:ss').format(now);
-  //         viewModel.state.recognitions[0].date =
-  //             DateFormat('yyyy-MM-dd').format(now);
-  //         ;
-  //         return Provider.of<NavigationService>(context, listen: false)
-  //             .pushNamed(
-  //           AppRoute.capturedScreen,
-  //           args: {
-  //             'recognition': viewModel.state.recognitions[0],
-  //             'image': list, // Pass JPEG image data
-  //           },
-  //         ).then(
-  //           (value) {
-  //             print("back");
-  //           },
-  //         );
-  //       },
-  //     );
-  //   }
-  // }
 
   void initCamera() {
     _cameraController = CameraController(
@@ -111,12 +69,6 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
 
   void loadModel() async {
     await viewModel.loadModel();
-  }
-
-  void setLabel() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // viewModel.setSelectedObject(widget.selectedLabel);
-    });
   }
 
   @override
