@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:object_detection_app/app/base/bas_view_model.dart';
 import 'package:object_detection_app/services/tensorflow_service.dart';
+import 'package:object_detection_app/services/tts_service.dart';
 import 'package:object_detection_app/view_states/home_view_state.dart';
 
 import '/models/recognition.dart';
@@ -23,6 +24,7 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   static const int _warningCooldownMs = 3000; // 3 giây
 
   late final TensorFlowService _tensorFlowService;
+  late final TtsService _ttsService = TtsService();
 
   HomeViewModel(BuildContext context, this._tensorFlowService)
       : super(context, HomeViewState());
@@ -105,12 +107,28 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     final int now = DateTime.now().millisecondsSinceEpoch;
 
     if (now - _lastWarningTime < _warningCooldownMs) {
-      return; //  cooldown
+      return;
     }
 
     _lastWarningTime = now;
 
-    debugPrint("CẢNH BÁO VA CHẠM: $label");
+    final String message = _buildWarningMessage(label);
+
+    debugPrint("WARNING: $message");
+    _ttsService.speak(message);
+  }
+
+  String _buildWarningMessage(String label) {
+    switch (label.toLowerCase()) {
+      case 'person':
+        return 'Cẩn thận, có người phía trước';
+      case 'car':
+      case 'motorbike':
+      case 'bus':
+        return 'Cẩn thận, có xe phía trước';
+      default:
+        return 'Cẩn thận, có vật cản phía trước';
+    }
   }
 
   // List<Recognition> findHighestConfidenceRecognition(

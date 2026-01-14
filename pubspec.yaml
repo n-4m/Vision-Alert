@@ -1,10 +1,9 @@
 name: object_detection_app
 description: "A new Flutter project."
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
-
 
 environment:
   sdk: ">=3.5.3 <4.0.0"
@@ -28,7 +27,8 @@ dependencies:
   image: ^4.5.2
   #stateMangemnt
   provider: ^6.1.2
-
+  #tts
+  flutter_tts: ^3.8.5
 
 dev_dependencies:
   flutter_test:
@@ -37,8 +37,6 @@ dev_dependencies:
   flutter_lints: ^4.0.0
 
 flutter:
-
-
   uses-material-design: true
 
   assets:
@@ -46,4 +44,3 @@ flutter:
     - assets/models/yolov2_tiny.tflite
     - assets/fonts/
     - assets/images/
-

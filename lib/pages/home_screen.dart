@@ -53,41 +53,41 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
     apertureController = StreamController<Map>.broadcast();
   }
 
-  Future<void> handleCaptureWhenDetect(CameraImage cameraImage) async {
-    if (!mounted) {
-      return;
-    }
-    if (viewModel.state.recognitions.isNotEmpty &&
-        viewModel.state.recognitions[0].confidenceInClass! > 0.7 &&
-        !viewModel.state.navigatedToCapture) {
-      Uint8List list = viewModel.convertCameraImageToFile(cameraImage);
-      viewModel.setNavigatedToCapture(true);
-      Future.delayed(
-        Duration(seconds: 3),
-        () {
-          DateTime now = DateTime.now();
+  // Future<void> handleCaptureWhenDetect(CameraImage cameraImage) async {
+  //   if (!mounted) {
+  //     return;
+  //   }
+  //   if (viewModel.state.recognitions.isNotEmpty &&
+  //       viewModel.state.recognitions[0].confidenceInClass! > 0.7 &&
+  //       !viewModel.state.navigatedToCapture) {
+  //     Uint8List list = viewModel.convertCameraImageToFile(cameraImage);
+  //     viewModel.setNavigatedToCapture(true);
+  //     Future.delayed(
+  //       Duration(seconds: 3),
+  //       () {
+  //         DateTime now = DateTime.now();
 
-          viewModel.state.recognitions[0].timestamp =
-              DateFormat('HH:mm:ss').format(now);
-          viewModel.state.recognitions[0].date =
-              DateFormat('yyyy-MM-dd').format(now);
-          ;
-          return Provider.of<NavigationService>(context, listen: false)
-              .pushNamed(
-            AppRoute.capturedScreen,
-            args: {
-              'recognition': viewModel.state.recognitions[0],
-              'image': list, // Pass JPEG image data
-            },
-          ).then(
-            (value) {
-              print("back");
-            },
-          );
-        },
-      );
-    }
-  }
+  //         viewModel.state.recognitions[0].timestamp =
+  //             DateFormat('HH:mm:ss').format(now);
+  //         viewModel.state.recognitions[0].date =
+  //             DateFormat('yyyy-MM-dd').format(now);
+  //         ;
+  //         return Provider.of<NavigationService>(context, listen: false)
+  //             .pushNamed(
+  //           AppRoute.capturedScreen,
+  //           args: {
+  //             'recognition': viewModel.state.recognitions[0],
+  //             'image': list, // Pass JPEG image data
+  //           },
+  //         ).then(
+  //           (value) {
+  //             print("back");
+  //           },
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 
   void initCamera() {
     _cameraController = CameraController(
@@ -104,7 +104,7 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
           return;
         }
         await viewModel.runModel(context, image);
-        await handleCaptureWhenDetect(image);
+        // await handleCaptureWhenDetect(image);
       });
     });
   }
