@@ -14,7 +14,7 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   bool _isLoadModel = false;
   bool _isDetecting = false;
   List<String>? _labels;
-  String? _selectedObject;
+  // String? _selectedObject;
   bool _navigatedToCapture = false;
 
   late final TensorFlowService _tensorFlowService;
@@ -22,11 +22,11 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   HomeViewModel(BuildContext context, this._tensorFlowService)
       : super(context, HomeViewState());
 
-  void setSelectedObject(String value) {
-    _selectedObject = value;
-    state.selectedObject = value;
-    notifyListeners();
-  }
+  // void setSelectedObject(String value) {
+  //   _selectedObject = value;
+  //   state.selectedObject = value;
+  //   notifyListeners();
+  // }
 
   void setNavigatedToCapture(bool value) {
     _navigatedToCapture = value;
@@ -63,10 +63,14 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
             log('Time detection: ${endTime - startTime}');
 
             if (recognitions != null && mounted) {
-              state.recognitions = findHighestConfidenceRecognition(
-                  List<Recognition>.from(
-                      recognitions.map((model) => Recognition.fromJson(model))),
-                  _selectedObject ?? "");
+              // state.recognitions = findHighestConfidenceRecognition(
+              //     List<Recognition>.from(
+              //         recognitions.map((model) => Recognition.fromJson(model))),
+              //     _selectedObject ?? "");
+              state.recognitions = List<Recognition>.from(
+                recognitions.map((model) => Recognition.fromJson(model)),
+              );
+
               state.widthImage = cameraImage.width;
               state.heightImage = cameraImage.height;
               notifyListeners();

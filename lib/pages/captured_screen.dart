@@ -112,14 +112,14 @@ class _CapturedScreenState extends BaseStateful<CapturedScreen, HomeViewModel> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    '“Detecting ${widget.recognition!.detectedClass ?? ''}“',
+                    '"Detecting: ${widget.recognition!.detectedClass ?? ''}"',
                     style: AppTextStyles.boldTextStyle(
                         color: AppColors.white, fontSize: AppFontSizes.large),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'confidence%: ${((widget.recognition!.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%}',
+                    'Confidence: ${((widget.recognition!.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
                     style: AppTextStyles.boldTextStyle(
                         color: AppColors.blue, fontSize: AppFontSizes.medium),
                   ),

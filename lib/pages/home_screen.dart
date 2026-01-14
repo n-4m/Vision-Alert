@@ -68,9 +68,9 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
           DateTime now = DateTime.now();
 
           viewModel.state.recognitions[0].timestamp =
-              DateFormat('yyyy-MM-dd').format(now);
-          viewModel.state.recognitions[0].date =
               DateFormat('HH:mm:ss').format(now);
+          viewModel.state.recognitions[0].date =
+              DateFormat('yyyy-MM-dd').format(now);
           ;
           return Provider.of<NavigationService>(context, listen: false)
               .pushNamed(
@@ -115,7 +115,7 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
 
   void setLabel() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      viewModel.setSelectedObject(widget.selectedLabel);
+      // viewModel.setSelectedObject(widget.selectedLabel);
     });
   }
 
@@ -144,10 +144,10 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
   Widget buildPageWidget(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Provider.of<NavigationService>(context, listen: false)
-            .pushNamedAndRemoveUntil(
-          AppRoute.chooseObjectScreen,
-        );
+        // Provider.of<NavigationService>(context, listen: false)
+        //     .pushNamedAndRemoveUntil(
+        //   AppRoute.chooseObjectScreen,
+        // );
 
         return true;
       },

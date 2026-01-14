@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:object_detection_app/pages/choose_object_screen.dart';
+// import 'package:object_detection_app/pages/choose_object_screen.dart';
 import 'package:object_detection_app/pages/home_screen.dart';
 import 'package:object_detection_app/pages/splash_screen.dart';
 import 'package:object_detection_app/services/tensorflow_service.dart';
@@ -13,7 +13,7 @@ import '../pages/captured_screen.dart';
 
 class AppRoute {
   static const splashScreen = '/splashScreen';
-  static const chooseObjectScreen = '/chooseObjectScreen';
+  // static const chooseObjectScreen = '/chooseObjectScreen';
   static const homeScreen = '/homeScreen';
   static const capturedScreen = '/capturedScreen';
 
@@ -31,13 +31,13 @@ class AppRoute {
     switch (settings.name) {
       case splashScreen:
         return AppPageRoute(builder: (_) => const SplashScreen());
-      case chooseObjectScreen:
-        return AppPageRoute(
-            appSettings: settings,
-            builder: (_) => ChangeNotifierProvider(
-                create: (context) => HomeViewModel(context,
-                    Provider.of<TensorFlowService>(context, listen: false)),
-                builder: (_, __) => const ChooseObjectScreen()));
+      // case chooseObjectScreen:
+      //   return AppPageRoute(
+      //       appSettings: settings,
+      //       builder: (_) => ChangeNotifierProvider(
+      //           create: (context) => HomeViewModel(context,
+      //               Provider.of<TensorFlowService>(context, listen: false)),
+      //           builder: (_, __) => const ChooseObjectScreen()));
       case homeScreen:
         String? selectedLabel;
         if (settings.arguments != null) {

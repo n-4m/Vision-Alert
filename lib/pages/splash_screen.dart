@@ -29,8 +29,10 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
       Future.delayed(const Duration(seconds: 5), () {
+        // Provider.of<NavigationService>(context, listen: false)
+        //     .pushNamedAndRemoveUntil(AppRoute.chooseObjectScreen);
         Provider.of<NavigationService>(context, listen: false)
-            .pushNamedAndRemoveUntil(AppRoute.chooseObjectScreen);
+            .pushNamedAndRemoveUntil(AppRoute.homeScreen);
       });
     });
   }
