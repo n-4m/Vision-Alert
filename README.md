@@ -76,8 +76,8 @@ The system only triggers a warning when the following safety conditions are met:
 
 <div align="center">
   <img src="https://github.com/user-attachments/assets/95e8b234-5174-42ae-b02f-69f62b6b79e8" width="300" />
-  <img src="https://github.com/user-attachments/assets/d0608ace-8aff-465c-a336-99dc501c70aa" with="300" />
-  <img src="https://github.com/user-attachments/assets/8dd518dc-06e2-4c9f-b56f-4f39c0c1d2b5" with="300" />
+  <img src="https://github.com/user-attachments/assets/d0608ace-8aff-465c-a336-99dc501c70aa" width="300" />
+  <img src="https://github.com/user-attachments/assets/8dd518dc-06e2-4c9f-b56f-4f39c0c1d2b5" width="300" />
   <img src="https://github.com/user-attachments/assets/0fcbcd74-f3b7-4b09-8a11-78da8706f101" width="300" />
 </div>
 
