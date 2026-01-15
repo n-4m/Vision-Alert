@@ -75,7 +75,12 @@ Hệ thống chỉ kích hoạt cảnh báo khi hội đủ các điều kiện 
 ## 📸 Screen Shots
 
 <div align="center">
-  <img src="https://via.placeholder.com/300x600?text=Main+Screen" width="300" />
+  <img src="https://github.com/user-attachments/assets/95e8b234-5174-42ae-b02f-69f62b6b79e8" width="300" />
+(https://github.com/user-attachments/assets/d0608ace-8aff-465c-a336-99dc501c70aa)
+https://github.com/user-attachments/assets/8dd518dc-06e2-4c9f-b56f-4f39c0c1d2b5)
+https://github.com/user-attachments/assets/0fcbcd74-f3b7-4b09-8a11-78da8706f101)
+
+    
   <img src="https://via.placeholder.com/300x600?text=Detection+Alert" width="300" />
 </div>
 
