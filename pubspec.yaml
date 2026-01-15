@@ -29,6 +29,8 @@ dependencies:
   provider: ^6.1.2
   #tts
   flutter_tts: ^3.8.5
+  #logo
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -44,3 +46,8 @@ flutter:
     - assets/models/yolov2_tiny.tflite
     - assets/fonts/
     - assets/images/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_icon.png"

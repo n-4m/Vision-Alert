@@ -134,15 +134,15 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     double screenWidth,
     double screenHeight,
   ) {
-    // 1. confidence (null-safe)
+    // confidence (null-safe)
     final double confidence = current.confidenceInClass ?? 0.0;
     if (confidence < 0.5) return false;
 
-    // 2. rect null check
+    // rect null check
     final rect = current.rect;
     if (rect == null) return false;
 
-    // 3. label null check
+    // label null check
     final String? label = current.detectedClass;
     if (label == null) return false;
 
@@ -150,19 +150,19 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
       return false;
     }
 
-    // 4. bounding box size (YOLO rect)
+    // bounding box size (YOLO rect)
     final double boxWidth = rect.w * screenWidth;
     final double boxHeight = rect.h * screenHeight;
     final double currentArea = boxWidth * boxHeight;
 
-    // 5. so sánh diện tích
+    // so sánh diện tích
     final double? previousArea = _previousAreas[label];
     _previousAreas[label] = currentArea;
 
     if (previousArea == null) return false;
     if (currentArea / previousArea < 1.3) return false;
 
-    // 6. vị trí trung tâm bounding box
+    // vị trí trung tâm bounding box
     final double centerX = rect.x + rect.w / 2;
     final double centerY = rect.y + rect.h / 2;
 
@@ -172,6 +172,11 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     if (dx > 0.25 || dy > 0.25) return false;
 
     return true;
+  }
+
+  void resetCollisionState() {
+    _previousAreas.clear();
+    _lastWarningTime = 0;
   }
 
   Future<void> close() async {

@@ -74,5 +74,5 @@ class AppTextStyles {
 class AppStrings {
   AppStrings._();
 
-  static const title = 'Realtime Object Detection';
+  static const title = 'Vision Alert';
 }

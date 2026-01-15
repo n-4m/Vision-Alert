@@ -43,26 +43,27 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
     super.initState();
     loadModel();
     initCamera();
-
     apertureController = StreamController<Map>.broadcast();
   }
 
   void initCamera() {
     _cameraController = CameraController(
-        cameras[viewModel.state.cameraIndex], ResolutionPreset.high);
+      cameras[viewModel.state.cameraIndex],
+      ResolutionPreset.high,
+    );
+
     _initializeControllerFuture = _cameraController.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
+      if (!mounted) return;
+
+      viewModel.resetCollisionState();
+
       _cameraController.setFlashMode(FlashMode.off);
 
       setState(() {});
+
       _cameraController.startImageStream((image) async {
-        if (!mounted) {
-          return;
-        }
+        if (!mounted) return;
         await viewModel.runModel(context, image);
-        // await handleCaptureWhenDetect(image);
       });
     });
   }

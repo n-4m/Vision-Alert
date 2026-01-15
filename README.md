@@ -1,57 +1,91 @@
-Flutter Object Detection App
-📖 Project Description
-A Flutter application integrating object detection with real-time user guidance and image capture. This app leverages advanced tools like TensorFlow Lite and YOLOv8 for accurate object detection, while ensuring smooth functionality with state-of-the-art frameworks and responsive UI components.
+# 🚨 Vision Alert (Flutter)
 
-🔑 Key Features
-Dynamic Object Marker Placement
+## 📖 Project Description
 
-Real-time placement of visual markers on detected objects.
-Markers adjust dynamically based on camera frames.
-Object Detection (YOLOv8)
+Đây là ứng dụng di động **cảnh báo va chạm thời gian thực** được phát triển bằng Flutter, nhằm hỗ trợ người khiếm thị di chuyển an toàn hơn. Ứng dụng sử dụng camera của thiết bị kết hợp với mô hình học máy **YOLOv8** để nhận diện vật cản và đưa ra cảnh báo bằng giọng nói tiếng Việt ngay khi phát hiện nguy cơ va chạm tiềm ẩn.
 
-Integrated YOLOv8 with TensorFlow Lite for on-device object detection in real-time.
-Capable of recognizing a wide range of objects in various environments.
-Photo Management
+## 🔑 Key Features
 
-Capture photos when the detection confidence exceeds 0.7.
-Display captured photos on a separate screen with complete metadata, including:
-Object Type
-Confidence Level
-Date
-Timestamp
-Architecture
+### Nhận diện vật thể thời gian thực
 
-Clean project structure using the MVVM (Model-View-ViewModel) pattern for maintainable and scalable development.
+- Sử dụng mô hình **YOLOv8 (TensorFlow Lite)** tối ưu hóa cho di động.
+- Tự động nhận diện và phân loại nhiều loại vật thể khác nhau trong khung hình camera.
 
-🚀 Getting Started
-Prerequisites
-Flutter SDK version: >=3.5.3
+### Hệ thống cảnh báo thông minh
 
-Installation
-Clone the repository:
-git clone https://github.com/mohamedahemd99/Realtime-Object-Detection.git
+- **Ước lượng khoảng cách:** Dựa trên sự thay đổi kích thước của Bounding Box để xác định vật thể đang tiến lại gần.
+- **Xác định vùng nguy hiểm:** Chỉ tập trung cảnh báo các vật thể nằm ở khu vực trung tâm (hướng di chuyển của người dùng).
+- **Cảnh báo giọng nói (TTS):** Phát âm thanh cảnh báo bằng tiếng Việt rõ ràng: _"Cẩn thận, có vật cản phía trước"_.
+- **Cơ chế Cooldown:** Ngăn chặn việc lặp lại cảnh báo quá nhanh gây nhiễu cho người dùng.
 
-Navigate to the project directory:
-cd flutter-object-detection-app  
+### Hiệu suất & Kiến trúc
 
-Install dependencies:
-flutter pub get  
+- **On-device Processing:** Mọi thao tác xử lý AI đều thực hiện trực tiếp trên điện thoại, không cần kết nối internet.
+- **MVVM Architecture:** Sử dụng mô hình thiết kế Clean Architecture (Model-View-ViewModel) để dễ dàng bảo trì và mở rộng mã nguồn.
 
-Run the application:
-flutter run  
+## 🧠 Technologies
 
-    
-- Screen Shots
- 
-https://github.com/user-attachments/assets/dacf15b2-b27b-4c69-b92e-796a586b8660
+- **Framework:** Flutter (Dart)
+- **AI/ML:** TensorFlow Lite, YOLOv8
+- **Plugins:** Camera Plugin, Flutter TTS (Text To Speech)
+- **Architecture:** MVVM Pattern (BaseViewModel)
 
-<img src="https://github.com/user-attachments/assets/561e5601-383e-47d2-a533-2204753d8d8d" width="300" />
-<img src="https://github.com/user-attachments/assets/5426eb8d-9bf5-4e1d-aff7-90cfdab009d9" width="300" />
-<img src="https://github.com/user-attachments/assets/c23f15ff-c2b9-4951-ae70-50f959968663" width="300" />
-<img src="https://github.com/user-attachments/assets/1ee76010-be83-408d-96ed-7fb9c1ba779b" width="300" />
-<img src="https://github.com/user-attachments/assets/19cd42c0-deae-46d0-9958-91067c2d41a8" width="300" />
-<img src="https://github.com/user-attachments/assets/c4a8b8a5-ccab-4132-936b-7e12d8e39cb5" width="300" />
-<img src="https://github.com/user-attachments/assets/962fdecb-6e01-4878-9b9a-60734d9831cc" width="300" />
-<img src="https://github.com/user-attachments/assets/2e84eed4-d02e-4644-b3a6-ade8e23d0f73" width="300" />
-<img src="https://github.com/user-attachments/assets/df0e1aa9-4877-4744-a0ba-020fece94465" width="300" />
+## 🔍 Collision Warning Logic
 
+Hệ thống chỉ kích hoạt cảnh báo khi hội đủ các điều kiện an toàn sau:
+
+1.  **Confidence ≥ 0.5:** Độ tin cậy của việc nhận diện đạt trên 50%.
+2.  **Approaching:** Diện tích bounding box của vật thể đang tăng dần (vật thể đang tiến gần camera).
+3.  **Central Region:** Vật thể nằm trong vùng quan sát trọng tâm của camera.
+4.  **Cooldown elapsed:** Đã qua khoảng thời gian nghỉ giữa các lần cảnh báo.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Flutter SDK version: `>= 3.x`
+- Thiết bị Android thật (để chạy camera và xử lý TFLite)
+
+### Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone [https://github.com/n-4m/Vision-Alert.git](https://github.com/n-4m/Vision-Alert.git)
+    ```
+
+2.  **Navigate to the project directory:**
+
+    ```bash
+    cd Vision-Alert
+    ```
+
+3.  **Install dependencies:**
+
+    ```bash
+    flutter pub get
+    ```
+
+4.  **Run the application:**
+
+    ```bash
+    flutter run
+    ```
+
+## 📸 Screen Shots
+
+<div align="center">
+  <img src="https://via.placeholder.com/300x600?text=Main+Screen" width="300" />
+  <img src="https://via.placeholder.com/300x600?text=Detection+Alert" width="300" />
+</div>
+
+## ⚠️ Limitations
+
+- Việc ước lượng khoảng cách hiện tại chỉ ở mức tương đối dựa trên kích thước hình ảnh.
+- Chưa hỗ trợ cảm biến chiều sâu (Depth sensor).
+- Hiệu năng phụ thuộc vào cấu hình phần cứng của từng thiết bị.
+
+## 👨‍💻 Author
+
+**Phát triển bởi n-4m**  
+_Mục đích: Đồ án học thuật hỗ trợ cộng đồng._
