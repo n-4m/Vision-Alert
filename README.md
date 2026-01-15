@@ -51,7 +51,7 @@ The system only triggers a warning when the following safety conditions are met:
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/n-4m/Vision-Alert.git](https://github.com/n-4m/Vision-Alert.git)
+    git clone https://github.com/n-4m/Vision-Alert.git
     ```
 
 2.  **Navigate to the project directory:**
