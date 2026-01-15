@@ -30,7 +30,7 @@ dependencies:
   #tts
   flutter_tts: ^3.8.5
   #logo
-  flutter_launcher_icons: ^0.14.4
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -50,4 +50,4 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/app_logo.png"
