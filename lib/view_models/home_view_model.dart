@@ -13,13 +13,22 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   bool _isLoadModel = false;
   bool _isDetecting = false;
   List<String>? _labels;
-  // String? _selectedObject;
   bool _navigatedToCapture = false;
   final Map<String, double> _previousAreas = {};
   double _screenWidth = 0;
   double _screenHeight = 0;
   int _lastWarningTime = 0;
   static const int _warningCooldownMs = 3000; // 3 giây
+  static const Set<String> _dangerousObjects = {
+    'person',
+    'car',
+    'bus',
+    'motorbike',
+    'bicycle',
+    'truck',
+    'chair',
+    'pole',
+  };
 
   late final TensorFlowService _tensorFlowService;
   late final TtsService _ttsService = TtsService();
@@ -27,11 +36,6 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   HomeViewModel(BuildContext context, this._tensorFlowService)
       : super(context, HomeViewState());
 
-  // void setSelectedObject(String value) {
-  //   _selectedObject = value;
-  //   state.selectedObject = value;
-  //   notifyListeners();
-  // }
   void setScreenSize(double width, double height) {
     _screenWidth = width;
     _screenHeight = height;
@@ -141,6 +145,10 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     // 3. label null check
     final String? label = current.detectedClass;
     if (label == null) return false;
+
+    if (!_dangerousObjects.contains(label.toLowerCase())) {
+      return false;
+    }
 
     // 4. bounding box size (YOLO rect)
     final double boxWidth = rect.w * screenWidth;

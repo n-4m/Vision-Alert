@@ -90,7 +90,7 @@ class ConfidenceWidget extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  '“Detecting ${entity.detectedClass ?? ''} ${((entity.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
+                  'Detecting ${entity.detectedClass ?? ''} ${((entity.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.regularTextStyle(
                       color: Colors.red,
