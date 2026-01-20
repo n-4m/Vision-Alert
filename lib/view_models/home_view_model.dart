@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:object_detection_app/app/base/bas_view_model.dart';
 import 'package:object_detection_app/services/tensorflow_service.dart';
 import 'package:object_detection_app/services/tts_service.dart';
@@ -114,6 +115,7 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
 
     debugPrint("WARNING: $message");
     _ttsService.speak(message);
+    HapticFeedback.mediumImpact();
   }
 
   String _buildWarningMessage(String label) {
