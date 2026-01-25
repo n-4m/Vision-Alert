@@ -16,7 +16,7 @@ class ConfidenceWidget extends StatelessWidget {
   final double heightAppBar;
 
   const ConfidenceWidget({
-    Key? key,
+    super.key,
     required this.heightAppBar,
     required this.entities,
     required this.previewWidth,
@@ -24,85 +24,89 @@ class ConfidenceWidget extends StatelessWidget {
     required this.screenWidth,
     required this.screenHeight,
     required this.selectedObject,
-  }) : super(key: key);
+  });
 
   List<Widget> _renderHeightLineEntities() {
     List<Widget> results = <Widget>[];
-    if (entities.isEmpty) {
-      results.add(
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'Detecting $selectedObject',
-              style: AppTextStyles.regularTextStyle(
-                  color: Colors.red,
-                  fontSize: AppFontSizes.medium,
-                  backgroundColor: AppColors.white),
-            ),
+    // if (entities.isEmpty) {
+    //   results.add(
+    //     Center(
+    //       child: Padding(
+    //         padding: const EdgeInsets.all(8.0),
+    //         child: Text(
+    //           'Detecting $selectedObject',
+    //           style: AppTextStyles.regularTextStyle(
+    //               color: Colors.red,
+    //               fontSize: AppFontSizes.medium,
+    //               backgroundColor: AppColors.white),
+    //         ),
+    //       ),
+    //     ),
+    //   );
+    // } else {
+    results = entities.map((entity) {
+      var x0 = entity.rect!.x;
+      var y0 = entity.rect!.y;
+      var w0 = entity.rect!.w;
+      var h0 = entity.rect!.h;
+
+      var screenRatio = screenHeight / screenWidth;
+      var previewRatio = previewHeight / previewWidth;
+
+      var scaleWidth, scaleHeight, x, y, w, h;
+      if (screenRatio > previewRatio) {
+        scaleHeight = screenHeight;
+        scaleWidth = screenHeight / previewRatio;
+        var difW = (scaleWidth - screenWidth) / scaleWidth;
+        x = (x0 - difW / 2) * scaleWidth;
+        w = w0 * scaleWidth;
+        if (x0 < difW / 2) {
+          w -= (difW / 2 - x0) * scaleWidth;
+        }
+        y = y0 * scaleHeight;
+        h = h0 * scaleHeight;
+      } else {
+        scaleHeight = screenWidth * previewRatio;
+        scaleWidth = screenWidth;
+        var difH = (scaleHeight - screenHeight) / scaleHeight;
+        x = x0 * scaleWidth;
+        w = w0 * scaleWidth;
+        y = (y0 - difH / 2) * scaleHeight;
+        h = h0 * scaleHeight;
+        if (y0 < difH / 2) {
+          h -= (difH / 2 - y0) * scaleHeight;
+        }
+      }
+      return Positioned(
+        left: max(0, x),
+        top: max(0, y),
+        width: w,
+        height: h,
+        child: Container(
+          padding: const EdgeInsets.all(0.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.red, width: 2.0),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Detecting ${entity.detectedClass ?? ''} ${((entity.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
+                // overflow: TextOverflow.ellipsis,
+                softWrap: true,
+                textAlign: TextAlign.start,
+                style: AppTextStyles.regularTextStyle(
+                    color: Colors.red,
+                    fontSize: AppFontSizes.medium,
+                    backgroundColor: AppColors.white),
+              ),
+            ],
           ),
         ),
       );
-    } else {
-      results = entities.map((entity) {
-        var _x = entity.rect!.x;
-        var _y = entity.rect!.y;
-        var _w = entity.rect!.w;
-        var _h = entity.rect!.h;
-
-        var screenRatio = screenHeight / screenWidth;
-        var previewRatio = previewHeight / previewWidth;
-
-        var scaleWidth, scaleHeight, x, y, w, h;
-        if (screenRatio > previewRatio) {
-          scaleHeight = screenHeight;
-          scaleWidth = screenHeight / previewRatio;
-          var difW = (scaleWidth - screenWidth) / scaleWidth;
-          x = (_x - difW / 2) * scaleWidth;
-          w = _w * scaleWidth;
-          if (_x < difW / 2) {
-            w -= (difW / 2 - _x) * scaleWidth;
-          }
-          y = _y * scaleHeight;
-          h = _h * scaleHeight;
-        } else {
-          scaleHeight = screenWidth * previewRatio;
-          scaleWidth = screenWidth;
-          var difH = (scaleHeight - screenHeight) / scaleHeight;
-          x = _x * scaleWidth;
-          w = _w * scaleWidth;
-          y = (_y - difH / 2) * scaleHeight;
-          h = _h * scaleHeight;
-          if (_y < difH / 2) {
-            h -= (difH / 2 - _y) * scaleHeight;
-          }
-        }
-        return Positioned(
-          left: max(0, x),
-          top: max(0, y),
-          width: w,
-          height: h,
-          child: Container(
-            padding: EdgeInsets.all(0.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.red, width: 2.0),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  'Detecting ${entity.detectedClass ?? ''} ${((entity.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.regularTextStyle(
-                      color: Colors.red,
-                      fontSize: AppFontSizes.medium,
-                      backgroundColor: AppColors.white),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList();
-    }
+    }).toList();
+    // }
     return results;
   }
 

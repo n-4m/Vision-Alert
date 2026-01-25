@@ -16,6 +16,7 @@ This is a **real-time collision warning** mobile application developed with Flut
 - **Distance Estimation:** Based on changes in Bounding Box size to determine if an object is approaching.
 - **Danger Zone Identification:** Focuses warnings only on objects located in the central area (the user's direction of movement).
 - **Voice Warning (TTS):** Plays clear audio warnings in Vietnamese: _"Cẩn thận, có vật cản phía trước"_ (Be careful, obstacle ahead).
+- **Haptic Feedback:** Triggers device vibration to provide an immediate tactile alert, ensuring the user is warned even in noisy environments.
 - **Cooldown Mechanism:** Prevents warnings from repeating too quickly to avoid overwhelming the user.
 
 ### Performance & Architecture

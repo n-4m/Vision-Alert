@@ -7,7 +7,6 @@ import 'package:object_detection_app/app/base/bas_view_model.dart';
 import 'package:object_detection_app/services/tensorflow_service.dart';
 import 'package:object_detection_app/services/tts_service.dart';
 import 'package:object_detection_app/view_states/home_view_state.dart';
-
 import '/models/recognition.dart';
 
 class HomeViewModel extends BaseViewModel<HomeViewState> {
@@ -22,13 +21,20 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   static const int _warningCooldownMs = 3000; // 3 giây
   static const Set<String> _dangerousObjects = {
     'person',
-    'car',
-    'bus',
-    'motorbike',
     'bicycle',
+    'car',
+    'motorbike',
+    'bus',
+    'train',
     'truck',
+    'boat',
+    'fire hydrant',
+    'bench',
     'chair',
-    'pole',
+    'diningtable',
+    'sofa',
+    'bed',
+    'refrigerator',
   };
 
   late final TensorFlowService _tensorFlowService;
@@ -102,20 +108,25 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     }
   }
 
-  void _triggerCollisionWarning(String label) {
+  Future<void> _strongVibration() async {
+    for (int i = 0; i < 3; i++) {
+      HapticFeedback.vibrate();
+      await Future.delayed(const Duration(milliseconds: 120));
+    }
+  }
+
+  Future<void> _triggerCollisionWarning(String label) async {
     final int now = DateTime.now().millisecondsSinceEpoch;
 
-    if (now - _lastWarningTime < _warningCooldownMs) {
-      return;
-    }
+    if (now - _lastWarningTime < _warningCooldownMs) return;
 
     _lastWarningTime = now;
 
     final String message = _buildWarningMessage(label);
 
-    debugPrint("WARNING: $message");
     _ttsService.speak(message);
-    HapticFeedback.mediumImpact();
+
+    await _strongVibration();
   }
 
   String _buildWarningMessage(String label) {
@@ -125,7 +136,15 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
       case 'car':
       case 'motorbike':
       case 'bus':
+      case 'truck':
+      case 'bicycle':
+      case 'train':
         return 'Cẩn thận, có xe phía trước';
+      case 'bench':
+      case 'chair':
+      case 'diningtable':
+      case 'sofa':
+        return 'Cẩn thận, có bàn ghế phía trước';
       default:
         return 'Cẩn thận, có vật cản phía trước';
     }
