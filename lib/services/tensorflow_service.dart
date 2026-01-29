@@ -10,8 +10,7 @@ class TensorFlowService {
       String? res;
 
       res = await Tflite.loadModel(
-          model: 'assets/models/yolov2_tiny.tflite',
-          labels: 'assets/models/yolov2_tiny.txt');
+          model: 'assets/models/yolo.tflite', labels: 'assets/models/yolo.txt');
 
       if (kDebugMode) {
         print('loadModel: $res');
@@ -25,8 +24,7 @@ class TensorFlowService {
 
   Future<List<String>> loadLabels() async {
     try {
-      final labelsRaw =
-          await rootBundle.loadString('assets/models/yolov2_tiny.txt');
+      final labelsRaw = await rootBundle.loadString('assets/models/yolo.txt');
       final labels = labelsRaw
           .split('\n')
           .map((label) => label.replaceAll('\r', '')) // Remove \r

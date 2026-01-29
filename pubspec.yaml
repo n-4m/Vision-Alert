@@ -42,8 +42,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/models/yolov2_tiny.txt
-    - assets/models/yolov2_tiny.tflite
+    - assets/models/yolo.txt
+    - assets/models/yolo.tflite
     - assets/fonts/
     - assets/images/
 

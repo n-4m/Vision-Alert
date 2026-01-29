@@ -13,8 +13,8 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   bool _isLoadModel = false;
   bool _isDetecting = false;
   List<String>? _labels;
-  bool _navigatedToCapture = false;
   final Map<String, double> _previousAreas = {};
+  static const double _minDangerAreaRatio = 0.2; // 12% màn hình
   double _screenWidth = 0;
   double _screenHeight = 0;
   int _lastWarningTime = 0;
@@ -48,13 +48,6 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     _screenHeight = height;
   }
 
-  void setNavigatedToCapture(bool value) {
-    _navigatedToCapture = value;
-    state.navigatedToCapture = value;
-
-    notifyListeners();
-  }
-
   Future<void> loadModel() async {
     await _tensorFlowService.loadModel();
 
@@ -73,32 +66,30 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     try {
       if (_isLoadModel && mounted) {
         if (!_isDetecting && mounted) {
-          if (!_navigatedToCapture) {
-            _isDetecting = true;
-            int startTime = DateTime.now().millisecondsSinceEpoch;
-            var recognitions =
-                await _tensorFlowService.runModelOnFrame(cameraImage);
-            int endTime = DateTime.now().millisecondsSinceEpoch;
+          _isDetecting = true;
+          int startTime = DateTime.now().millisecondsSinceEpoch;
+          var recognitions =
+              await _tensorFlowService.runModelOnFrame(cameraImage);
+          int endTime = DateTime.now().millisecondsSinceEpoch;
 
-            log('Time detection: ${endTime - startTime}');
+          log('Time detection: ${endTime - startTime}');
 
-            if (recognitions != null && mounted) {
-              state.recognitions = List<Recognition>.from(
-                recognitions.map((model) => Recognition.fromJson(model)),
-              );
-              for (final r in state.recognitions) {
-                if (_isCollisionRisk(r, _screenWidth, _screenHeight)) {
-                  _triggerCollisionWarning(r.detectedClass!);
-                  break;
-                }
+          if (recognitions != null && mounted) {
+            state.recognitions = List<Recognition>.from(
+              recognitions.map((model) => Recognition.fromJson(model)),
+            );
+            for (final r in state.recognitions) {
+              if (_isCollisionRisk(r, _screenWidth, _screenHeight)) {
+                _triggerCollisionWarning(r.detectedClass!);
+                break;
               }
-
-              state.widthImage = cameraImage.width;
-              state.heightImage = cameraImage.height;
-              notifyListeners();
             }
-            _isDetecting = false;
+
+            state.widthImage = cameraImage.width;
+            state.heightImage = cameraImage.height;
+            notifyListeners();
           }
+          _isDetecting = false;
         }
       } else {
         log('Please run `loadModel(type)` before running `runModel(cameraImage)`');
@@ -181,7 +172,11 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
     _previousAreas[label] = currentArea;
 
     if (previousArea == null) return false;
-    if (currentArea / previousArea < 1.3) return false;
+    final double screenArea = screenWidth * screenHeight;
+    final double areaRatio = currentArea / screenArea;
+
+    if (currentArea / previousArea < 2) return false;
+    if (areaRatio < _minDangerAreaRatio) return false;
 
     // vị trí trung tâm bounding box
     final double centerX = rect.x + rect.w / 2;
