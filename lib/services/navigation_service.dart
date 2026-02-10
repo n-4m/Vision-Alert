@@ -69,9 +69,6 @@ class NavigationService {
     );
   }
 
-  /// Consults the current route's [Route.willPop] method, and acts accordingly,
-  /// potentially popping the route as a result; returns whether the pop request
-  /// should be considered handled.
   Future<bool> maybePop<T extends Object>([Object? args]) async {
     return navigationKey.currentState!.maybePop<T>(args as T);
   }

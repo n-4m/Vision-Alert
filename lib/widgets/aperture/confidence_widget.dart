@@ -91,15 +91,18 @@ class ConfidenceWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Detecting ${entity.detectedClass ?? ''} ${((entity.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
-                // overflow: TextOverflow.ellipsis,
-                softWrap: true,
-                textAlign: TextAlign.start,
-                style: AppTextStyles.regularTextStyle(
-                    color: Colors.red,
-                    fontSize: AppFontSizes.medium,
-                    backgroundColor: AppColors.white),
+              Expanded(
+                child: Text(
+                  'Detecting ${entity.detectedClass ?? ''} ${((entity.confidenceInClass ?? 0) * 100).toStringAsFixed(0)}%',
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: true,
+                  maxLines: 2,
+                  textAlign: TextAlign.start,
+                  style: AppTextStyles.regularTextStyle(
+                      color: Colors.red,
+                      fontSize: AppFontSizes.medium,
+                      backgroundColor: AppColors.white),
+                ),
               ),
             ],
           ),

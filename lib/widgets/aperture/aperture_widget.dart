@@ -29,7 +29,7 @@ class _ApertureWidgetState extends State<ApertureWidget>
     super.initState();
     streamSubscription =
         widget.apertureController.stream.asBroadcastStream().listen((event) {
-      print(event);
+      // print(event);
       animationController.forward();
     });
 

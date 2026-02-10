@@ -95,20 +95,10 @@ class _HomeScreenState extends BaseStateful<HomeScreen, HomeViewModel>
 
   @override
   Widget buildPageWidget(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        // Provider.of<NavigationService>(context, listen: false)
-        //     .pushNamedAndRemoveUntil(
-        //   AppRoute.chooseObjectScreen,
-        // );
-
-        return true;
-      },
-      child: Scaffold(
-        extendBodyBehindAppBar: false,
-        appBar: buildAppBarWidget(context),
-        body: buildBodyWidget(context),
-      ),
+    return Scaffold(
+      extendBodyBehindAppBar: false,
+      appBar: buildAppBarWidget(context),
+      body: buildBodyWidget(context),
     );
   }
 
